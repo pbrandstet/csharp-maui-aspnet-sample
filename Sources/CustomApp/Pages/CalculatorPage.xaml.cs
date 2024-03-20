@@ -5,22 +5,14 @@ using System.Runtime.CompilerServices;
 
 namespace CustomApp.Pages;
 
-public partial class CalculatorPage : ContentPage, INotifyPropertyChanged
+public partial class CalculatorPage : ContentPage
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
 	private string _equation = String.Empty;
 	public CalculatorPage()
 	{
 		InitializeComponent();
 
         BindingContext = CalculatorPageModel.Instance;
-    }
-
-
-    private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     private void OnButtonClicked(object sender, EventArgs e)

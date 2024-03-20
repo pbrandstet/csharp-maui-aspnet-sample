@@ -6,11 +6,27 @@
              Title="CalculatorPage">
 
     <ContentPage.Resources>
+        <Style TargetType="Label"
+            ApplyToDerivedTypes="True">
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="FontSize" Value="Header" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Text" Value="{Binding Path=Equation}" />
+        </Style>
+        <Style x:Key="lblEquation"
+               TargetType="Label">
+            
+        </Style>
         <Style TargetType="Button"
             ApplyToDerivedTypes="True">
             <Setter Property="VerticalOptions" Value="FillAndExpand" />
             <Setter Property="HorizontalOptions" Value="FillAndExpand" />
             <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="Header" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontAttributes" Value="Bold" />
         </Style>
         <Style x:Key="btnGreyColor"
                TargetType="Button">
@@ -25,7 +41,8 @@
 
 
     <Grid Margin="24,24,24,24" ColumnSpacing="16" RowSpacing="16" RowDefinitions="*,*,*,*,*,*" ColumnDefinitions="*,*,*,*">
-        <Label Grid.Row="0" Grid.ColumnSpan="4" BackgroundColor="LightGray" Text="{Binding Path=Equation}"/>
+        <BoxView Grid.Row="0" Grid.ColumnSpan="4" BackgroundColor="LightGray" CornerRadius="8"/>
+        <Label Grid.Row="0" Grid.ColumnSpan="4" Style="{StaticResource lblEquation}" Text="{Binding Path=Equation}"/>
         <!--ROW 1-->
         <Button Grid.Row="1" Grid.Column="0" Text="AC" Style="{StaticResource btnGreyColor}" Clicked="OnButtonClicked"/>
         <Button Grid.Row="1" Grid.Column="1" Text="(" Style="{StaticResource btnGreyColor}" Clicked="OnButtonClicked"/>
