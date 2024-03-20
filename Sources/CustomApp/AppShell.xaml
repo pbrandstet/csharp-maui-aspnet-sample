@@ -19,6 +19,9 @@
     <FlyoutItem Title="Issues" Icon="issue.png" Route="issues">
         <ShellContent ContentTemplate="{DataTemplate pages:IssuesPage}" />
     </FlyoutItem>
+    <FlyoutItem Title="Calculator" Icon="issue.png" Route="calculator">
+        <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
+    </FlyoutItem>
 
     <Shell.FlyoutFooter>
         <views:ShellFlyoutFooter />

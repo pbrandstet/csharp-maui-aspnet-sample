@@ -7,5 +7,7 @@ namespace CustomApp.Models.Pages
         public static readonly UserPageModel Instance = new UserPageModel();
 
         private UserPageModel() { }
+
+
     }
 }

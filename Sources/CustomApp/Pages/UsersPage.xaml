@@ -25,7 +25,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Margin="20" Spacing="20"
-                                     Orientation="Horizontal">
+                                     Orientation="Vertical">
                             <Label Text="{Binding Path=FirstName}"/>
                             <Label Text="{Binding Path=LastName}"/>
                             <Label Text="{Binding Path=CreatedAt}"/>
