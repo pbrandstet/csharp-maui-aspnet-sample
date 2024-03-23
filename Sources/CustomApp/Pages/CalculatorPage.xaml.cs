@@ -26,7 +26,8 @@ public partial class CalculatorPage : ContentPage
 				CalculatorPageModel.Instance.ClearInput();
 				break;
 			case "=":
-				CalculatorPageModel.Instance.SolveEquation();
+				var result = CalculatorPageModel.Instance.SolveEquation();
+				CalculatorPageModel.Instance.UpdateEquation(result);
 				break;
             default:
 				CalculatorPageModel.Instance.AddCharacterToEquation(text);

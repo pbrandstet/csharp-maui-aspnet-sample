@@ -30,6 +30,11 @@ namespace CustomApp.Models.Pages
             Equation += character;
         }
 
+        public void UpdateEquation(string equation)
+        {
+            Equation = equation;
+        }
+
         public void ClearInput()
         {
             Equation = string.Empty;
@@ -39,14 +44,60 @@ namespace CustomApp.Models.Pages
         {
             if(exp.GetType() == typeof(BinaryExpression))
             {
-                return SolveBinaryExpression(exp as BinaryExpression);
+                var expression = (BinaryExpression)exp;
+
+                if(expression.LeftExpression.GetType() == typeof(BinaryExpression) && expression.RightExpression.GetType() == typeof(BinaryExpression))
+                {
+                    var left = SolveLogicalExpression(expression.LeftExpression);
+                    var right = SolveLogicalExpression(expression.RightExpression);
+                    return SolveLogicalExpression(new BinaryExpression(expression.Type, left, right));
+                }
+
+                if(expression.LeftExpression.GetType() == typeof (BinaryExpression) && expression.RightExpression.GetType() == typeof(ValueExpression))
+                {
+                    var left = SolveLogicalExpression(expression.LeftExpression);
+                    return new BinaryExpression(expression.Type, left, expression.RightExpression);
+                }
+
+                if(expression.LeftExpression.GetType() == typeof(ValueExpression) && expression.RightExpression.GetType() == typeof (BinaryExpression))
+                {
+                    var right = SolveLogicalExpression(expression.RightExpression);
+                    return new BinaryExpression(expression.Type, expression.LeftExpression, right);
+                }
+
+                if (expression.LeftExpression.GetType() == typeof (ValueExpression) && expression.RightExpression.GetType() == typeof (ValueExpression))
+                {
+                    try
+                    {
+                        var left = (ValueExpression)expression.LeftExpression;
+                        var leftValue = double.Parse(left.Value.ToString());
+
+                        var right = (ValueExpression)expression.RightExpression;
+                        var rightValue = double.Parse(right.Value.ToString());
+
+                        if (expression is LogicalExpression)
+                        {
+                            switch (expression.Type)
+                            {
+                                case BinaryExpressionType.Plus:
+                                    return new ValueExpression(leftValue + rightValue);
+                                case BinaryExpressionType.Minus:
+                                    return new ValueExpression(leftValue - rightValue);
+                                case BinaryExpressionType.Times:
+                                    return new ValueExpression(leftValue * rightValue);
+                                case BinaryExpressionType.Div:
+                                    return new ValueExpression(leftValue / rightValue);
+                            }
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    
+                }   
             }
-            return new ValueExpression(1);
-        }
-
-        private BinaryExpression SolveBinaryExpression(BinaryExpression exp)
-        {
-
+            return null;
         }
 
         //private ValueExpression SolveValueExpression(LogicalExpression left, LogicalExpression right)
@@ -63,8 +114,20 @@ namespace CustomApp.Models.Pages
 
             var result = SolveLogicalExpression(parsedExp);
 
+            if (result == null) throw new Exception("Failed to solve expression");
 
-            return 0;
+            if(result is ValueExpression)
+            {
+                var res = (ValueExpression)result;
+                return double.Parse(res.Value.ToString());
+            }
+            else
+            {
+                throw new Exception("Returned result wasn't of type ValueExpression");
+            }
+
+
+            
         }
 
         public string SolveEquation()
@@ -78,8 +141,7 @@ namespace CustomApp.Models.Pages
 
                 var result = SolveExpression(e);
 
-                Console.WriteLine("solved equation");
-                return "Hallo";
+                return result.ToString();
             }
             catch (Exception ex)
             {
